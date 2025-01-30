@@ -1,5 +1,86 @@
-﻿<h3>MasterScreen</h3>
+﻿@page "/master"
+@rendermode InteractiveServer
+
+<div class="content-box">
+    <div class="info-string">
+        <div class="photo-box">
+            <p class="big-text">Фото</p>
+        </div>
+        <div class="info-box">
+            <p class="big-text info-item">@MasterFirstName</p>
+            <p class="big-text info-item">@MasterLastName</p>
+            <p class="big-text info-item">@MasterProfession</p>
+            <p class="big-text info-item">@MasterWorkState</p>
+        </div>
+    </div>
+    <div class="rate-box">
+        <Card style="margin-top: 10px;">
+            <CardBody>
+                <RateStars Rate=@MasterRate Scale="0.4" />
+            </CardBody>
+        </Card>
+    </div>
+    <div>
+        <p class="medium-text">@MasterId</p>
+        <Button Color="ButtonColor.Dark" class="plus-btn">Оставить отзыв</Button>
+        <Card>
+            <CardBody>
+                @foreach (CommentDto comment in this.Сomments)
+                {
+                    <Card class="comment-box">
+                        <CardBody>
+                            <div class="header">
+                                <div class="small-photo" />
+                                <div>
+                                    <p class="small-text info-item">@comment.Client.FirstName</p>
+                                    <p class="small-text info-item">@comment.Client.LastName</p>
+                                </div>
+                                <div style="display: flex;flex: 1;justify-content: flex-end;">
+                                    <RateStars Scale="0.2" Rate=@comment.Rate />
+                                </div>
+                            </div>
+                            <Card style="margin-top: 10px;">
+                                <CardBody>
+                                    <div class="comment-text-box">
+                                        <p>@comment.Text</p>
+                                    </div> 
+                                </CardBody>
+                            </Card>
+                        </CardBody>
+                    </Card>
+                }
+            </CardBody>
+        </Card>
+    </div>
+</div>
 
 @code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public int MasterId { get; set; } = -1;
+    public string MasterFirstName { get; set; } = "Иван";
+    public string MasterLastName { get; set; } = "Иванов";
+    public string MasterProfession { get; set; } = "Механик";
+    public string MasterWorkState { get; set; } = "Стаж: 2 года";
+    public int MasterRate { get; set; } = 5;
+    public List<CommentDto> Сomments { get; set; } = new();
 
+    public string GetCommentsText()
+    {
+        int endSymbol = this.Сomments.Count % 10;
+        Console.WriteLine(endSymbol);
+        if (endSymbol == 1) 
+        {
+            return $"{this.Сomments.Count} отзыв";
+        }
+        else if (endSymbol > 1 && endSymbol < 5)
+        {
+            return $"{this.Сomments.Count} отзыва";
+        }
+        else 
+        {
+            return $"{this.Сomments.Count} отзывов";
+        }
+    }
 }
+
