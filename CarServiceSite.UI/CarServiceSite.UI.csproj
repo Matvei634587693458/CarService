@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CarServiceSite.BLL\CarServiceSite.BLL.csproj" />
     <ProjectReference Include="..\CarServiceSite.Core\CarServiceSite.Core.csproj" />
   </ItemGroup>
 

@@ -1,0 +1,85 @@
+﻿@rendermode InteractiveServer
+
+<div style="width: @(1280*Scale);height: @(256*Scale);overflow: hidden;">
+    @foreach (InteractiveStar star in _stars)
+    {
+        <img src=@star.GetCurrentImage() width="@(256*Scale)" height="@(256*Scale)" style="transition: opacity 0.3s ease;" @onmouseenter="() => EnableStars(star.Id)" @onmouseout="DisableStars" @onclick="Off" />
+    }
+</div>
+
+@code {
+    [Parameter]
+    public double Scale { get; set; } = 1;
+
+    private bool _isOn = true;
+    private int _state = 0;
+    private List<InteractiveStar> _stars = new List<InteractiveStar>();
+
+    public SetRate()
+    {
+        this.AddStar();
+        this.AddStar();
+        this.AddStar();
+        this.AddStar();
+        this.AddStar();
+    }
+
+    public int GetValue()
+    {
+        if (!this._isOn) {
+            int count = 0;
+            foreach (InteractiveStar star in this._stars)
+            {
+                if (star.IsActive)
+                {
+                    count++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            return count;
+        }
+        return 0;
+    }
+
+    private void Off()
+    {
+        this._isOn = false;
+    }
+
+    private void EnableStars(int activeId)
+    {
+        if (this._isOn)
+        {
+            foreach (InteractiveStar star in this._stars)
+            {
+                if (star.Id <= activeId)
+                {
+                    this._stars[star.Id].IsActive = true;
+                }
+            }
+        }
+    }
+
+    private void DisableStars()
+    {
+        if (this._isOn)
+        {
+            foreach (InteractiveStar star in this._stars)
+            {
+                if (star.IsActive)
+                {
+                    this._stars[star.Id].IsActive = false;
+                }
+            }
+        }
+    }
+
+    private void AddStar()
+    {
+        this._stars.Add(new InteractiveStar() {
+            Id=this._stars.Count});
+    }
+}

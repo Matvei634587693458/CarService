@@ -1,5 +1,13 @@
-﻿<h3>Profile</h3>
+﻿@page "/profile"
 
-@code {
+<PageTitle>Profile</PageTitle>
 
+<div class="content-box">
+    <MasterScreen Id=@Id/>
+</div>
+
+@code{
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public int? Id { get; set; } = null;
 }

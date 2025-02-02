@@ -1,0 +1,43 @@
+﻿<Modal @ref="modal"
+Title="Оставить отзыв"
+IsVerticallyCentered="true"
+OnHidden="RepostComment">
+    <BodyTemplate>
+        <div class="add-comment-box">
+            <InteractiveStars @ref="commentStars" Scale=0.36 />
+        </div>
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Dark" @onclick="RepostComment">Опубликовать</Button>
+    </FooterTemplate>
+</Modal>
+
+@code {
+    [Parameter]
+    public int? MasterId { get; set; } = null;
+
+    private string _commentText = "...";
+    private Modal modal = default!;
+    private InteractiveStars commentStars = default!;
+
+    private async void RepostComment() 
+    {
+        var masterManager = new MasterManager();
+        masterManager.AddCommentForMasterByMasterId(
+            (int)this.MasterId, new CommentInputModel(){
+                Text=this._commentText,
+                Rate=this.commentStars.GetValue(),
+                Client=new ClientInputModel(){
+                    Id=0,
+                    FirstName="Иван",
+                    LastName="Иванов"
+                }
+        });
+        await this.modal.HideAsync();
+    }
+
+    public async Task ShowAsync()
+    {
+        await this.modal.ShowAsync();
+    }
+}
