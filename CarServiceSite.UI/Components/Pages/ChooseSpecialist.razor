@@ -1,0 +1,28 @@
+﻿@page "/7"
+<PageTitle>ChooseSpecialist</PageTitle>
+
+<div class="container">
+    <h2 class="text-center">Выбрать специалиста</h2>
+    <div class="border p-2 mb-3 text-center">
+        <button class="btn w-100 border">Любой специалист</button>
+    </div>
+
+    @for (int i = 0; i < 3; i++)
+    {
+        <div class="row mb-2">
+            <div class="col-3 border p-2 text-center">
+                Фото
+            </div>
+            <div class="col-9 border p-2">
+                <p>Имя <span class="pale">Профессия</span></p>
+                <p>Звёзды <span class="pale">5 отзывов</span></p>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .pale {
+        color: rgba(0, 0, 0, 0.5);
+    }
+</style>

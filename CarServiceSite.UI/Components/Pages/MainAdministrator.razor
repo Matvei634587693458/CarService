@@ -47,10 +47,10 @@
     <div class="row">
         <div class="col">
             <div class="d-flex justify-content-between align-items-center border p-2">
-                <span>Подтвердите выполнение записи №@selectedRecordId</span>
+                <span>Подтвердите выполнение записи №0</span>
                 <div>
-                    <button class="btn btn-success btn-sm" @onclick="ConfirmRecord">✓</button>
-                    <button class="btn btn-danger btn-sm" @onclick="CancelRecord">X</button>
+                    <button class="btn btn-success btn-sm" @* @onclick="ConfirmRecord" *@>✓</button>
+                    <button class="btn btn-danger btn-sm" @* @onclick="CancelRecord" *@>X</button>
                 </div>
             </div>
         </div>
@@ -62,30 +62,9 @@
             <div class="list-group" style="max-height: 200px; overflow-y: auto;">
                 @for (int id = 1; id <= 5; id++)
                 {
-                    <div class="list-group-item list-group-item-action" @onclick="(() => SelectRecord(id))" style="cursor: pointer;" tabindex="0" role="button">Клиент @id</div>
+                    <div Onclick="Function" class="list-group-item list-group-item-action" style="cursor: pointer;" tabindex="0" role="button">Клиент @id</div>
                 }
             </div>
         </div>
     </div>
 </div>
-
-@code {
-    private int selectedRecordId = 0;
-
-    private void SelectRecord(int recordId)
-    {
-        selectedRecordId = recordId;
-        StateHasChanged();
-    }
-
-    private void ConfirmRecord()
-    {
-        Console.WriteLine($"Record {selectedRecordId} confirmed!");
-    }
-
-    private void CancelRecord()
-    {
-        Console.WriteLine($"Record {selectedRecordId} cancelled!");
-    }
-
-}
