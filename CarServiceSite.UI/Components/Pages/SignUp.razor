@@ -1,0 +1,71 @@
+﻿@page "/2"
+
+<PageTitle>Registration</PageTitle>
+
+<div class="container" style="text-align: center;">
+    <h1>Регистрация</h1>
+    <form method="post" style="display: inline-block; text-align: left;">
+        <div class="form-group">
+            <label for="FirstName">Имя</label>
+            <span class="required">*</span>
+            <input type="text" id="FirstName" name="FirstName" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="LastName">Фамилия</label>
+            <span class="required">*</span>
+            <input type="text" id="LastName" name="LastName" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="PhoneNumber">Телефон</label>
+            <span class="required">*</span>
+            <input type="tel" id="PhoneNumber" name="PhoneNumber" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="DateOfBirth">Дата рождения</label>
+            <span class="required">*</span>
+            <input type="date" id="DateOfBirth" name="DateOfBirth" class="form-control" required />
+            <small id="dateError" class="text-danger" style="display: none;"></small>
+        </div>
+
+        <div class="form-group">
+            <label for="Password">Пароль</label>
+            <span class="required">*</span>
+            <input type="password" id="Password" name="Password" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="Email">Эл. почта</label>
+            <input type="email" id="Email" name="Email" class="form-control" />
+        </div>
+
+        <div style="text-align: center;">
+            <button type="submit" class="btn btn-primary">Готово</button>
+        </div>
+    </form>
+</div>
+
+<style>
+    .required {
+        color: red;
+    }
+</style>
+
+<script>
+    const dateInput = document.getElementById('DateOfBirth');
+    const dateError = document.getElementById('dateError');
+
+    dateInput.addEventListener('change', function () {
+        const selectedDate = new Date(this.value);
+        const today = new Date();
+
+        if (selectedDate > today) {
+            dateError.style.display = 'block';
+            this.value = '';
+        } else {
+            dateError.style.display = 'none';
+        }
+    });
+</script>

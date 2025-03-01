@@ -1,0 +1,47 @@
+﻿@page "/5"
+
+<PageTitle>ChooseWork</PageTitle>
+
+<div class="container">
+    <h2 style="text-align: center;">Выбрать услугу</h2>
+
+    <div class="row mt-2">
+        <div class="col">
+            <div class="list-group" style="max-height: 400px; overflow-y: auto;">
+                @for (int id = 1; id <= 5; id++)
+                {
+                    <div class="form-group; border border-dark p-1 mt-3">
+                        <div class="border p-2">
+                            <div>Услуга</div>
+                            <div class="pale">Время</div>
+                            <div>Цена</div>
+                            <div class="float-right">
+                                <input type="checkbox" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="border border-dark p-1 mt-3">
+        <div>Кол-во услуг Общее время</div>
+        <div>Общая цена</div>
+    <div style="display: grid; place-items: center;">
+        <button class="btn btn-primary custom-btn" style="center;">Выбрать дату и время</button>
+    </div>
+    </div>
+</div>
+
+<style>
+    .pale {
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    .custom-btn {
+        padding: 5px 200px;
+    }
+
+</style>
+
