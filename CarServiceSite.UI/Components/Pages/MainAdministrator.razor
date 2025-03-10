@@ -1,4 +1,5 @@
-﻿@* @page "/4"
+﻿@page "/4"
+@rendermode InteractiveServer
 
 <PageTitle>MainAdministrator</PageTitle>
 
@@ -6,48 +7,7 @@
     <div class="row">
         <div class="col">
             <div class="d-flex justify-content-between align-items-center border p-2">
-                <span>Подтвердите выполнение записи №@selectedRecordId</span>
-                <div>
-                    <button class="btn btn-success btn-sm">✓</button>
-                    <button class="btn btn-danger btn-sm">X</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row mt-2">
-        <div class="col">
-            <h5>Список записией</h5>
-            <div class="list-group" style="max-height: 200px; overflow-y: auto;">
-                @for (int id = 1; id <= 5; id++)
-                {
-                    <div class="list-group-item list-group-item-action" @onclick="(() => SelectRecord(id))" style="cursor: pointer;">Клиент @id</div>
-                }
-            </div>
-        </div>
-    </div>
-</div>
-
-@code {
-    private int selectedRecordId = 0;
-
-    private void SelectRecord(int recordId)
-    {
-        selectedRecordId = recordId;
-        StateHasChanged();
-    }
-} *@
-
-
-@page "/4"
-
-<PageTitle>MainAdministrator</PageTitle>
-
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <div class="d-flex justify-content-between align-items-center border p-2">
-                <span>Подтвердите выполнение записи №0</span>
+                <span>Подтвердите выполнение записи № @_activ </span>
                 <div>
                     <button class="btn btn-success btn-sm" @* @onclick="ConfirmRecord" *@>✓</button>
                     <button class="btn btn-danger btn-sm" @* @onclick="CancelRecord" *@>X</button>
@@ -59,12 +19,23 @@
     <div class="row mt-2">
         <div class="col">
             <h5>Список записей</h5>
-            <div class="list-group" style="max-height: 200px; overflow-y: auto;">
-                @for (int id = 1; id <= 5; id++)
+            <div class="list-group" style="max-height: 600px; overflow-y: auto;">
+                @foreach (int id in aaa)
                 {
-                    <div Onclick="Function" class="list-group-item list-group-item-action" style="cursor: pointer;" tabindex="0" role="button">Клиент @id</div>
+                    <div @onclick="@(e=>{Rer(id);})" class="list-group-item list-group-item-action" style="cursor: pointer;" tabindex="0">Клиент @id</div>
                 }
             </div>
         </div>
     </div>
 </div>
+
+@code{
+    private int _activ = 0;
+
+    public void Rer(int id)
+    {
+        _activ = id;
+    }
+
+    private List<int> aaa = new List<int>() { 3, 5, 2, 4, 1, 3, 5, 2, 4, 1, 3, 5, 2, 4, 1, 3, 5, 2, 4, 1 };
+}
