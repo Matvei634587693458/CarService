@@ -1,4 +1,7 @@
 ﻿@page "/5"
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
 
 <PageTitle>ChooseWork</PageTitle>
 
@@ -8,15 +11,15 @@
     <div class="row mt-2">
         <div class="col">
             <div class="list-group" style="max-height: 400px; overflow-y: auto;">
-                @for (int id = 1; id <= 5; id++)
+                @foreach (var item in services)
                 {
-                    <div class="form-group; border border-dark p-1 mt-3">
+                    <div class="form-group border border-dark p-1 mt-3">
                         <div class="border p-2">
-                            <div>Услуга</div>
-                            <div class="pale">Время</div>
-                            <div>Цена</div>
+                            <div>@item.Name</div>
+                            <div class="pale">Время: @item.Duration минут</div>
+                            <div>Цена: @item.Price руб.</div>
                             <div class="float-right">
-                                <input type="checkbox" />
+                                <input type="checkbox" @bind="item.IsSelected" @bind:event="onchange" />
                             </div>
                         </div>
                     </div>
@@ -26,11 +29,12 @@
     </div>
 
     <div class="border border-dark p-1 mt-3">
-        <div>Кол-во услуг Общее время</div>
-        <div>Общая цена</div>
-    <div style="display: grid; place-items: center;">
-        <button class="btn btn-primary custom-btn" style="center;">Выбрать дату и время</button>
-    </div>
+        <div>Кол-во услуг: @SelectedServiceCount</div>
+        <div>Общее время: @TotalDuration минут</div>
+        <div>Общая цена: @TotalPrice руб.</div>
+        <div style="display: grid; place-items: center;">
+            <button class="btn btn-primary custom-btn" @onclick="CalculateTotals">Выбрать дату и время</button>
+        </div>
     </div>
 </div>
 
@@ -42,6 +46,49 @@
     .custom-btn {
         padding: 5px 200px;
     }
-
 </style>
 
+@code {
+    private List<Service> services = new List<Service>()
+    {
+        new Service { Name = "Мойка кузова", Duration = 30, Price = 500, IsSelected = true },
+        new Service { Name = "Чистка салона", Duration = 45, Price = 800, IsSelected = false },
+        new Service { Name = "Замена масла", Duration = 60, Price = 1200, IsSelected = false },
+        new Service { Name = "Диагностика подвески", Duration = 30, Price = 700, IsSelected = false },
+        new Service { Name = "Шиномонтаж", Duration = 90, Price = 1500, IsSelected = false }
+    };
+
+    private int SelectedServiceCount { get; set; }
+    private int TotalDuration { get; set; }
+    private decimal TotalPrice { get; set; }
+
+    protected override void OnInitialized()
+    {
+        CalculateTotals();
+    }
+
+    private async Task CalculateTotals()
+    {
+        SelectedServiceCount = services.Count(s => s.IsSelected);
+        TotalDuration = services.Where(s => s.IsSelected).Sum(s => s.Duration);
+        TotalPrice = services.Where(s => s.IsSelected).Sum(s => s.Price);
+        StateHasChanged();
+    }
+
+    private async Task NavigateToNextPage()
+    {
+        var selectedServices = services.Where(s => s.IsSelected).ToList();
+        var serializedServices = System.Text.Json.JsonSerializer.Serialize(selectedServices);
+        await JSRuntime.InvokeVoidAsync("sessionStorage.setItem", "selectedServices", serializedServices);
+
+        NavigationManager.NavigateTo("/4");
+    }
+
+    public class Service
+    {
+        public string Name { get; set; }
+        public int Duration { get; set; }
+        public decimal Price { get; set; }
+        public bool IsSelected { get; set; } = false;
+    }
+}
